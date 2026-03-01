@@ -78,8 +78,8 @@ void AFT_EmoteCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent)) {
 		
 		// Jumping
-		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ACharacter::Jump);
-		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
+		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &AFT_EmoteCharacter::Emote);
+		//EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
 
 		// Moving
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AFT_EmoteCharacter::Move);
@@ -100,6 +100,12 @@ void AFT_EmoteCharacter::Move(const FInputActionValue& Value)
 
 	if (Controller != nullptr)
 	{
+		if(bIsEmoting)
+		{
+			bIsEmoting = false;
+			StopAnimMontage(EmoteAction);
+		}
+
 		// find out which way is forward
 		const FRotator Rotation = Controller->GetControlRotation();
 		const FRotator YawRotation(0, Rotation.Yaw, 0);
@@ -126,5 +132,24 @@ void AFT_EmoteCharacter::Look(const FInputActionValue& Value)
 		// add yaw and pitch input to controller
 		AddControllerYawInput(LookAxisVector.X);
 		AddControllerPitchInput(LookAxisVector.Y);
+	}
+}
+
+
+// connah addition 3
+void AFT_EmoteCharacter::Emote(const FInputActionValue& Value)
+{
+	if (Controller != nullptr && EmoteAction != nullptr)
+	{
+		if (!bIsEmoting)
+		{
+			bIsEmoting = true;
+			PlayAnimMontage(EmoteAction);
+		}
+		else
+		{
+			bIsEmoting = false;
+			StopAnimMontage(EmoteAction);
+		}
 	}
 }

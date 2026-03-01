@@ -44,6 +44,12 @@ class AFT_EmoteCharacter : public ACharacter
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* LookAction;
 
+	// Connah addition 1
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Emote, meta = (AllowPrivateAccess = "true"))
+	UAnimMontage* EmoteAction;
+
+	bool bIsEmoting = false;
+
 public:
 	AFT_EmoteCharacter();
 	
@@ -55,6 +61,9 @@ protected:
 
 	/** Called for looking input */
 	void Look(const FInputActionValue& Value);
+
+	// Connah addition 2
+	void Emote(const FInputActionValue& Value);
 			
 
 protected:
