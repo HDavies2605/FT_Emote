@@ -50,8 +50,6 @@ AFT_EmoteCharacter::AFT_EmoteCharacter()
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
 	FollowCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
 
-	// set the animInstance 
-	AnimInstance = GetMesh()->GetAnimInstance();
 
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
@@ -61,6 +59,8 @@ void AFT_EmoteCharacter::BeginPlay()
 {
 	// Call the base class  
 	Super::BeginPlay();
+	// set the animInstance 
+	AnimInstance = GetMesh()->GetAnimInstance();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -82,7 +82,9 @@ void AFT_EmoteCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 		
 		// Jumping
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &AFT_EmoteCharacter::EmoteTPose);
-		//EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
+		EnhancedInputComponent->BindAction(FlyAction, ETriggerEvent::Started, this, &AFT_EmoteCharacter::EmoteFly);
+		EnhancedInputComponent->BindAction(DuckAction, ETriggerEvent::Started, this, &AFT_EmoteCharacter::EmoteDuck);
+	
 
 		// Moving
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AFT_EmoteCharacter::Move);
