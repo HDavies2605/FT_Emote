@@ -12,5 +12,11 @@ Easy
 
 Loop the montages so they don't end until the player moves
 
+
+
+
+
+With this I have used the Standard, however Mixamo is a great choice, but isn't compatible with the unreal maniquins
+
 &nbsp;
 

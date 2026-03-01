@@ -35,6 +35,12 @@ class AFT_EmoteCharacter : public ACharacter
 	/** Jump Input Action */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* JumpAction;
+	/** Jump fly Action */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* FlyAction;
+	/** Jump duck Action */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* DuckAction;
 
 	/** Move Input Action */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
@@ -46,8 +52,15 @@ class AFT_EmoteCharacter : public ACharacter
 
 	// Connah addition 1
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Emote, meta = (AllowPrivateAccess = "true"))
-	UAnimMontage* EmoteAction;
+	UAnimMontage* EmoteActionTpose;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Emote, meta = (AllowPrivateAccess = "true"))
+	UAnimMontage* EmoteActionFly;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Emote, meta = (AllowPrivateAccess = "true"))
+	UAnimMontage* EmoteActionDuck;
 
+	// tracks current animation
+	UAnimInstance* AnimInstance;
+	// track if we are emoting
 	bool bIsEmoting = false;
 
 public:
@@ -63,8 +76,10 @@ protected:
 	void Look(const FInputActionValue& Value);
 
 	// Connah addition 2
-	void Emote(const FInputActionValue& Value);
-			
+	void EmoteTPose(const FInputActionValue& Value);
+	void EmoteFly(const FInputActionValue& Value);
+	void EmoteDuck(const FInputActionValue& Value);
+	void Emote(UAnimMontage* anim);
 
 protected:
 	// APawn interface

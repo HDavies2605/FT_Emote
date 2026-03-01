@@ -50,6 +50,9 @@ AFT_EmoteCharacter::AFT_EmoteCharacter()
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
 	FollowCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
 
+	// set the animInstance 
+	AnimInstance = GetMesh()->GetAnimInstance();
+
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
 }
@@ -78,7 +81,7 @@ void AFT_EmoteCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent)) {
 		
 		// Jumping
-		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &AFT_EmoteCharacter::Emote);
+		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &AFT_EmoteCharacter::EmoteTPose);
 		//EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
 
 		// Moving
@@ -103,7 +106,7 @@ void AFT_EmoteCharacter::Move(const FInputActionValue& Value)
 		if(bIsEmoting)
 		{
 			bIsEmoting = false;
-			StopAnimMontage(EmoteAction);
+			StopAnimMontage(AnimInstance->GetCurrentActiveMontage());
 		}
 
 		// find out which way is forward
@@ -137,19 +140,47 @@ void AFT_EmoteCharacter::Look(const FInputActionValue& Value)
 
 
 // connah addition 3
-void AFT_EmoteCharacter::Emote(const FInputActionValue& Value)
+void AFT_EmoteCharacter::EmoteTPose(const FInputActionValue& Value)
 {
-	if (Controller != nullptr && EmoteAction != nullptr)
+	if (Controller != nullptr && EmoteActionTpose != nullptr)
+	{
+		Emote(EmoteActionTpose);
+	}
+}
+
+void AFT_EmoteCharacter::EmoteFly(const FInputActionValue& Value)
+{
+	if (Controller != nullptr && EmoteActionFly != nullptr)
+	{
+		Emote(EmoteActionFly);
+	}
+}
+
+void AFT_EmoteCharacter::EmoteDuck(const FInputActionValue& Value)
+{
+	if (Controller != nullptr && EmoteActionDuck != nullptr)
+	{
+		Emote(EmoteActionDuck);
+	}
+}
+
+void AFT_EmoteCharacter::Emote(UAnimMontage* anim)
+{
+	if (Controller != nullptr && anim != nullptr)
 	{
 		if (!bIsEmoting)
 		{
 			bIsEmoting = true;
-			PlayAnimMontage(EmoteAction);
+			PlayAnimMontage(anim);
+		}
+		else if(AnimInstance->GetCurrentActiveMontage() != anim)
+		{
+			PlayAnimMontage(anim);
 		}
 		else
 		{
 			bIsEmoting = false;
-			StopAnimMontage(EmoteAction);
+			StopAnimMontage(anim);
 		}
 	}
 }
