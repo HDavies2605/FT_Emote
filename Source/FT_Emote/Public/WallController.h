@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "WallControllerBaseState.h"
+#include "Components/BoxComponent.h"
 #include "WallController.generated.h"
 
 UCLASS()
@@ -14,7 +16,20 @@ class FT_EMOTE_API AWallController : public AActor
 public:	
 	// Sets default values for this actor's properties
 	AWallController();
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "WallControllerStates")
+	UWallControllerBaseState* CurrentState;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "WallControllerStates")
+	UWallControllerBaseState* IdleState;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "WallControllerStates")
+	UWallControllerBaseState* ActiveState;
 
+	// box to start game
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "WallControllerCollider")
+	UBoxComponent* StartGameBox;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "WallControllerCollider")
+	UBoxComponent* EndGameBox;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "WallControllerWalls")
+	TArray<TSubclassOf<class AActor>> WallsToControl;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
