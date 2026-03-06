@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "WallControllerBaseState.h"
 #include "Components/BoxComponent.h"
+#include "Components/SceneComponent.h"
 #include "WallController.generated.h"
 
 UCLASS()
@@ -23,6 +24,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "WallControllerStates")
 	UWallControllerBaseState* ActiveState;
 
+	// these enable the boxes to have a position and rotation
+	USceneComponent* StartPos;
+	USceneComponent* EndPos;
+
 	// box to start game
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "WallControllerCollider")
 	UBoxComponent* StartGameBox;
@@ -30,6 +35,7 @@ public:
 	UBoxComponent* EndGameBox;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "WallControllerWalls")
 	TArray<TSubclassOf<class AActor>> WallsToControl;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
