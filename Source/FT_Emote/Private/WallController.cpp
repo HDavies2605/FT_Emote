@@ -35,9 +35,6 @@ AWallController::AWallController()
 	EndPos->SetupAttachment(StartPos);
 	EndPos->SetRelativeLocation(FVector(0.f, 0.f, -210.f));
 	EndGameBox->SetupAttachment(EndPos);
-
-	
-
 }
 
 // Called when the game starts or when spawned
@@ -50,14 +47,17 @@ void AWallController::BeginPlay()
 	if(!IdleState)
 	{
 		IdleState = NewObject<UWallControllerBaseState_IDLE>(this);
+		IdleState->SetController(this);
 	}
 	if (!PlayState)
 	{
 		PlayState = NewObject<UMyWallControllerBaseState_PLAY>(this);
+		PlayState->SetController(this);
 	}
 	if (!PauseState)
 	{
 		PauseState = NewObject<UMyWallControllerBaseState_PAUSE>(this);
+		PauseState->SetController(this);
 	}
 	CurrentState = IdleState;
 	if (CurrentState)
@@ -108,4 +108,30 @@ void AWallController::ChangeState(UWallControllerBaseState* NewState)
 		// we also force into the initialisation
 		CurrentState->EnterState();
 	}
+}
+
+void AWallController::CreateWall()
+{
+
+	TSubclassOf<AActor> WallClass = WallsToControl[FMath::RandRange(0, WallsToControl.Num() - 1)]; // get random wall
+
+	if (WallClass)
+	{
+		// in unreal we need to spefify these dont worry about it for now
+		FActorSpawnParameters Params;
+		Params.Owner = this;
+		Params.SpawnCollisionHandlingOverride =
+			ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+		FVector SpawnPos = StartPos->GetComponentLocation();
+		SpawnPos.Y -= 100;
+		CurrentWall = GetWorld()->SpawnActor<AActor>(
+			WallClass,
+			SpawnPos,
+			StartPos->GetComponentRotation(),
+			Params
+		);
+
+		UE_LOG(LogTemp, Warning, TEXT("Spawned wall: %s"), *GetNameSafe(CurrentWall));
+	}
+
 }

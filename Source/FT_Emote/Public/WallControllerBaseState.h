@@ -14,17 +14,22 @@
  * 3. Trying to instantiate the abstract class directly, which will result in a compile-time error.
  * 4. Not including the necessary header files for the derived classes that will implement this base state.
  */
+// forward reference as both will use each other
+class AWallController;
 UCLASS(Abstract, NotBlueprintable)
 class FT_EMOTE_API UWallControllerBaseState : public UObject
 {
 	GENERATED_BODY()
-
+protected:
+	AWallController* Controller;
 public:
+	void SetController(AWallController* ControllerMain);
 	// note to set to abstract i set the methods to 0, otherwise know as a pure virtual function, 
 	// which means that the derived class must implement these methods, otherwise it will also be abstract and cannot be instantiated.
 	virtual void EnterState();
 	virtual void ExitState();
 	virtual void UpdateState(float DeltaTime);
 	virtual void HandleState();
+
 	// for a player you might what to have functions to handle inputs
 };

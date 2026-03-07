@@ -3,6 +3,11 @@
 
 #include "WallControllerBaseState.h"
 
+void UWallControllerBaseState::SetController(AWallController* ControllerMain)
+{
+	Controller = ControllerMain;
+}
+
 void UWallControllerBaseState::EnterState(){}
 void UWallControllerBaseState::ExitState() {}
 void UWallControllerBaseState::UpdateState(float DeltaTime) {}
