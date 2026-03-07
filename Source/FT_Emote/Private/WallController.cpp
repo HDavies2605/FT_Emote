@@ -11,18 +11,16 @@ AWallController::AWallController()
 
 
 	StartPos = CreateDefaultSubobject<USceneComponent>(TEXT("StartPos"));
-	StartPos->SetRelativeLocation(FVector(0.f, 0.f, 5.f));
 	EndPos = CreateDefaultSubobject<USceneComponent>(TEXT("EndPos"));
-	EndPos->SetRelativeLocation(FVector(0.f, 0.f, -5.f));
 	SetRootComponent(StartPos);
 
 
 	StartGameBox = CreateDefaultSubobject<UBoxComponent>(TEXT("StartBox"));
-	StartGameBox->SetBoxExtent(FVector(50.f, 10.f, 50.f));
+	StartGameBox->SetBoxExtent(FVector(150.f, 10.f, 150.f));
 	StartGameBox->SetGenerateOverlapEvents(true);
 
 	EndGameBox = CreateDefaultSubobject< UBoxComponent>(TEXT("EndBox"));
-	EndGameBox->SetBoxExtent(FVector(1000.f, 1000.f, 30.f));
+	EndGameBox->SetBoxExtent(FVector(3000.f, 3000.f, 30.f));
 	// at the start we onlyt care about the start game box, so we disable the end game box
 	EndGameBox->SetGenerateOverlapEvents(false);
 
@@ -33,6 +31,7 @@ AWallController::AWallController()
 	// need bind the attachments
 	StartGameBox->SetupAttachment(StartPos);
 	EndPos->SetupAttachment(StartPos);
+	EndPos->SetRelativeLocation(FVector(0.f, 0.f, -210.f));
 	EndGameBox->SetupAttachment(EndPos);
 
 }
@@ -42,8 +41,6 @@ void AWallController::BeginPlay()
 {
 	Super::BeginPlay();
 	UE_LOG(LogTemp, Warning, TEXT("We are in the Begin Play of the Wall Controller"));
-	
-	
 }
 
 // Called every frame

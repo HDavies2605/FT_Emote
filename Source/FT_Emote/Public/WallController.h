@@ -25,7 +25,9 @@ public:
 	UWallControllerBaseState* ActiveState;
 
 	// these enable the boxes to have a position and rotation
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "WallControllerCollider")
 	USceneComponent* StartPos;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "WallControllerCollider")
 	USceneComponent* EndPos;
 
 	// box to start game
@@ -43,7 +45,9 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+	UFUNCTION()
 	void StartGameTriggered(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	UFUNCTION()
 	void EndGameTriggered(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 };
