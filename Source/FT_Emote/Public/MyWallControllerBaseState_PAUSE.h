@@ -20,4 +20,7 @@ public:
 	virtual void ExitState() override;
 	virtual void UpdateState(float DeltaTime) override;
 	virtual void HandleState() override;
+private:
+	int Delay = 5;
+	float TimePassed = 0;
 };
