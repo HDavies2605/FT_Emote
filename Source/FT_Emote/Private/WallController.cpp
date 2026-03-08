@@ -123,7 +123,8 @@ void AWallController::CreateWall()
 		Params.SpawnCollisionHandlingOverride =
 			ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
 		FVector SpawnPos = StartPos->GetComponentLocation();
-		SpawnPos.Y -= 100;
+		SpawnPos.Y += 300;
+		SpawnPos.Z -= 50;
 		CurrentWall = GetWorld()->SpawnActor<AActor>(
 			WallClass,
 			SpawnPos,

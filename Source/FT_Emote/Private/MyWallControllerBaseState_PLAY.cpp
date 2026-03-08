@@ -16,7 +16,7 @@ void UMyWallControllerBaseState_PLAY::UpdateState(float DeltaTime)
 	if (Controller->CurrentWall)
 	{
 		FVector NewPos = Controller->CurrentWall->GetActorLocation();
-		NewPos.Y += 10 * DeltaTime;
+		NewPos.Y -= 100 * DeltaTime;
 		Controller->CurrentWall->SetActorLocation(NewPos);
 	}
 }
@@ -24,6 +24,10 @@ void UMyWallControllerBaseState_PLAY::UpdateState(float DeltaTime)
 void UMyWallControllerBaseState_PLAY::HandleState()
 {
 	//Check if the wall should despawn and we should pause for a break
+	if (Controller->CurrentWall->GetActorLocation().Y < Controller->GetActorLocation().Y - 100)
+	{
+		Controller->ChangeState(Controller->PauseState);
+	}
 
 }
 
